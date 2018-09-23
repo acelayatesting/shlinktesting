@@ -25,4 +25,17 @@ after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/clover.xml
 
+# Before deploying, build dist file for current tag
+before_deploy:
+  - ./build.sh ${TRAVIS_TAG#?}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: REWzWMXoN/mIXOAgDeA3Cjmqh/WHj026YUYQZjy7hkBci6H7BTn1FRXgjYumn3Fcad35Iuuk1VlSa85O7evv2Hq7I09s+a/vhmUVX8SXjQgyWueH48IeNCVQAVE23O1MXDiCA34eZ4N9HxqCL8vprrnFu1/rrAHitduECLBEPPeo1JGqhli+TiNNCi1KcAoaby1lzviSp3DXPI1/4OxUdJB7unOcx1HwaklA4dwQqyz6d0Fapjk8ofkTPT23eBvKBz1a3AVNUWRlHdXzO4RBkFprgh1D/HWBacURaDm8tFua2+JEUqgbuBgn6rvdz1JInHEda3XguQwvRqdkagg2V7SbFulWRbOX3icePWTk/Rpa5Obz6ZPXm/n34LZ6pt/JpL1NgX5YxYwp8v59jFdt5IO+Otu+FPe0Z9TSqXs9sOw2cmxzfd3jjPJUn5U4VK1VvY6kJVGP1rPjb1m1PjwbQz0/TOflqm8SPhaHtu1HsqZ0uy/WjYWcn6zo43fJIt1FSA8PuGSGpcNQO5SWqZ2nzC1Hqvin0fESssPto6g8sRLWETVsuiHWEDlmaVozFJl9f3Cnfy7ozYAIREpDixFbaP+FyfGpX6H+UkxW6Dmb67ArD+Huip0ALnbYLT82XrmY/4BwG7Ohh1y0HAirK+rePOvCejyz+3GQiAJMCgcs0qA=
+  file: "./build/shlink_${TRAVIS_TAG#?}_dist.zip"
+  on:
+    tags: true
+    php: 7.1
+
 sudo: false
