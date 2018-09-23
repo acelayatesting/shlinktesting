@@ -25,7 +25,7 @@ after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/clover.xml
 
-# Before deploying, build dist file for current tag
+# Before deploying, build dist file for current travis tag
 before_deploy:
   - ./build.sh ${TRAVIS_TAG#?}
 
