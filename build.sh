@@ -8,7 +8,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 version=$1
-builtcontent="./build/dist/shlink_${version}_dist"
+builtcontent="./build/shlink_${version}_dist"
 projectdir=$(pwd)
 [ -f ./composer.phar ] && composerBin='./composer.phar' || composerBin='composer'
 
@@ -49,9 +49,10 @@ sed -i "s/%SHLINK_VERSION%/${version}/g" config/autoload/app_options.global.php
 
 # Compressing file
 echo 'Compressing files...'
+cd "${projectdir}"/build
+rm -f ./shlink_${version}_dist.zip
+zip -ry ./shlink_${version}_dist.zip ./shlink_${version}_dist
 cd "${projectdir}"
-rm -f ./build/shlink_${version}_dist.zip
-zip -ry ./build/shlink_${version}_dist.zip ${builtcontent}
 rm -rf "${builtcontent}"
 
 echo 'Done!'
