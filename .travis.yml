@@ -1,5 +1,7 @@
 language: php
 
+sudo: false # Use containerized environment
+
 branches:
   only:
     - /.*/
@@ -12,7 +14,7 @@ before_install:
   - phpenv config-add data/infra/travis-php/memcached.ini
   - phpenv config-add data/infra/travis-php/apcu.ini
 
-before_script:
+install:
   - composer self-update
   - composer install --no-interaction
 
@@ -20,7 +22,7 @@ script:
   - mkdir build
   - composer check
 
-after_script:
+after_success:
   - vendor/bin/phpcov merge build --clover build/clover.xml
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/clover.xml
@@ -38,5 +40,3 @@ deploy:
   on:
     tags: true
     php: 7.1
-
-sudo: false
